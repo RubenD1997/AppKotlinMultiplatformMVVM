@@ -53,6 +53,9 @@ kotlin {
         iosMain.dependencies {
             //Libraries IOS
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
     }
 }
 
