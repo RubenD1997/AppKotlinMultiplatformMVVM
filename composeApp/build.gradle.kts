@@ -33,6 +33,11 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            //Koin
+            implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.0.2"))
+            implementation(libs.koin.core)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -49,6 +54,12 @@ kotlin {
             //Navigation PreCompose
             api(libs.precompose)
             api(libs.precompose.viewmodel)
+
+            //Koin
+            implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.0.2"))
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            api(libs.precompose.koin)
         }
         iosMain.dependencies {
             //Libraries IOS
