@@ -65,6 +65,7 @@ fun ExpenseDetailScreen(
     categoryList: List<ExpenseCategory> = emptyList(),
     addExpenseNavigateBack: (Expense) -> Unit
 ) {
+
     val colors = GetColorsTheme()
     var price by rememberSaveable { mutableStateOf(expenseToEdit?.amount ?: 0.0) }
     var description by rememberSaveable { mutableStateOf(expenseToEdit?.description ?: "") }
