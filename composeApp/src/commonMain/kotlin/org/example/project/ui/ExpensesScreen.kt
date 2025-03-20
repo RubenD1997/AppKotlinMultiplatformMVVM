@@ -3,6 +3,7 @@ package org.example.project.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,6 +42,13 @@ import org.example.project.model.Expense
 import org.example.project.presentation.ExpensesUiState
 import org.example.project.ui.ExpenseItemActions.Delete
 import org.example.project.ui.ExpenseItemActions.Edit
+import org.example.project.utils.EXPENSE_EMPTY_SUCCESS_TEST_TAG
+import org.example.project.utils.EXPENSE_SCREEN_CLICK_ITEM_TEST_TAG
+import org.example.project.utils.EXPENSE_SCREEN_CONTENT_TEST_TAG
+import org.example.project.utils.EXPENSE_SCREEN_ERROR_TEST_TAG
+import org.example.project.utils.EXPENSE_SCREEN_LOADING_TEST_TAG
+import org.example.project.utils.EXPENSE_SCREEN_SUCCESS_TEST_TAG
+import org.example.project.utils.EXPENSE_SCREEN_SUCCESS_TOTAL_TEST_TAG
 import org.example.project.utils.SwipeToDeleteContainer
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -52,16 +61,23 @@ fun ExpensesScreen(
     val colors = GetColorsTheme()
     when (val result = uiState) {
         is Resource.Failure -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxSize().testTag(EXPENSE_SCREEN_ERROR_TEST_TAG),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
                     text = result.exception.message.toString(),
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.testTag(EXPENSE_SCREEN_CONTENT_TEST_TAG)
                 )
             }
         }
 
         is Resource.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxSize().testTag(EXPENSE_SCREEN_LOADING_TEST_TAG),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
         }
@@ -69,7 +85,8 @@ fun ExpensesScreen(
         is Resource.Success -> {
             if (result.data.expenses.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+                        .testTag(EXPENSE_EMPTY_SUCCESS_TEST_TAG),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -81,7 +98,8 @@ fun ExpensesScreen(
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+                        .testTag(EXPENSE_SCREEN_SUCCESS_TEST_TAG),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     stickyHeader {
@@ -115,7 +133,8 @@ fun ExpensesTotalHeader(total: Double) {
                 "$$total",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color.White
+                color = Color.White,
+                modifier = Modifier.testTag(EXPENSE_SCREEN_SUCCESS_TOTAL_TEST_TAG)
             )
             Text("USD", modifier = Modifier.align(Alignment.CenterEnd), color = Color.Gray)
         }
@@ -154,13 +173,13 @@ sealed class ExpenseItemActions {
 @Composable
 fun ExpensesItem(expense: Expense, onExpenseAction: (ExpenseItemActions) -> Unit) {
     val color = GetColorsTheme()
-    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp).pointerInput(Unit) {
-        detectTapGestures(onLongPress = {
-            onExpenseAction(Delete(expense))
-        }, onTap = {
-            onExpenseAction(Edit(expense))
-        })
-    }, backgroundColor = color.colorExpenseItem, shape = RoundedCornerShape(30)) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp)
+            .clickable { onExpenseAction(Edit(expense)) }
+            .testTag(EXPENSE_SCREEN_CLICK_ITEM_TEST_TAG.plus("_${expense.id}")),
+        backgroundColor = color.colorExpenseItem,
+        shape = RoundedCornerShape(30)
+    ) {
         Row(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically

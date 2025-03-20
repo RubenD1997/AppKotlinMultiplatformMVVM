@@ -4,9 +4,9 @@ android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
 androidDriver = "2.0.2"
-androidx-activityCompose = "1.9.3"
+androidx-activityCompose = "1.10.1"
 androidx-appcompat = "1.7.0"
-androidx-constraintlayout = "2.2.0"
+androidx-constraintlayout = "2.2.1"
 androidx-core-ktx = "1.15.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
@@ -19,10 +19,14 @@ precompose = "1.6.2"
 precomposeKoin = "1.6.2"
 statelyCommon = "2.1.0"
 ktor = "3.1.1"
-coroutines = "1.9.0"
+coroutines = "1.10.1"
+uiTestJunit4Android = "1.7.8"
+uiTestManifest = "1.7.8"
 
 [libraries]
 android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "androidDriver" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiTestManifest" }
+androidx-ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "androidDriver" }
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android" }
