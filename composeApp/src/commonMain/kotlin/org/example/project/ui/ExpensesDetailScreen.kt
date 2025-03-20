@@ -21,7 +21,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Colors
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -47,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -58,6 +58,7 @@ import org.example.project.GetColorsTheme
 import org.example.project.data.TitleTopBarTypes
 import org.example.project.model.Expense
 import org.example.project.model.ExpenseCategory
+import org.example.project.utils.EXPENSE_DETAIL_TEST_TAG
 
 @Composable
 fun ExpenseDetailScreen(
@@ -95,6 +96,7 @@ fun ExpenseDetailScreen(
     }) {
         Column(
             modifier = Modifier.fillMaxSize().padding(16.dp)
+                .testTag(EXPENSE_DETAIL_TEST_TAG)
         ) {
             ExpenseAmount(price, keyboardController) {
                 price = it
