@@ -64,6 +64,8 @@ kotlin {
 
             //Ktor
             implementation(libs.ktor.client.okhttp)
+
+            implementation(libs.accompanist.systemuicontroller)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

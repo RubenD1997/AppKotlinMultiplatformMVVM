@@ -25,14 +25,17 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 import org.example.project.data.TitleTopBarTypes
 import moe.tlaster.precompose.navigation.path
 import org.example.navigation.Navigation
+import org.example.project.data.CrossConfigDevice
+import org.example.project.data.SessionCache
 import org.koin.compose.KoinContext
 
 @Composable
 @Preview
-fun App() {
+fun App(configDevice: CrossConfigDevice? = null) {
     PreComposeApp {
         KoinContext {
             val colors = GetColorsTheme()
+            SessionCache.configDevice = configDevice
             AppTheme {
                 val navigator = rememberNavigator()
                 var titleTopBar = GetTitleTopBar(navigator)

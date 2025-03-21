@@ -9,7 +9,7 @@ import org.example.project.model.ExpenseCategory
 interface ExpensesRepository {
     fun getExpenses(): Flow<List<Expense>>
     suspend fun addExpense(expense: Expense)
-    suspend fun editExpense(expense: Expense): Flow<Resource<Boolean>>
+    suspend fun editExpense(expense: Expense)
     suspend fun deleteExpense(id: Long)
     fun getCategories(): List<ExpenseCategory>
     fun getExpenseById(id: Long): Expense

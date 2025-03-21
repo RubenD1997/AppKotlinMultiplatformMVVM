@@ -63,22 +63,25 @@ class ExpensesRepositoryImpl(
     }
 
     override suspend fun addExpense(expense: Expense) {
-        client.post("expenses") {
-            setBody(
-                NetworkExpense(
-                    amount = expense.amount,
-                    categoryName = expense.category.name,
-                    description = expense.description
+        try {
+            client.post("expenses") {
+                setBody(
+                    NetworkExpense(
+                        amount = expense.amount,
+                        categoryName = expense.category.name,
+                        description = expense.description
+                    )
                 )
-            )
-        }
-        queries.transaction {
-            queries.insert(expense.amount, expense.category.name, expense.description)
+            }
+        } catch (e: Exception) {
+            println(e.message.toString())
+            queries.transaction {
+                queries.insert(expense.amount, expense.category.name, expense.description)
+            }
         }
     }
 
-    override suspend fun editExpense(expense: Expense): Flow<Resource<Boolean>> = flow {
-        emit(Resource.Loading)
+    override suspend fun editExpense(expense: Expense) {
         try {
             client.put("expenses/${expense.id}") {
                 setBody(
@@ -90,6 +93,7 @@ class ExpensesRepositoryImpl(
                 )
             }
         } catch (e: Exception) {
+            println(e.message.toString())
             queries.transaction {
                 queries.update(
                     expense.amount,
@@ -98,9 +102,8 @@ class ExpensesRepositoryImpl(
                     expense.id
                 )
             }
-            emit(Failure(e))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
     override suspend fun deleteExpense(id: Long) {
         try {

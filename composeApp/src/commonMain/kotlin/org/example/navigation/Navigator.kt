@@ -40,7 +40,6 @@ fun Navigation(navigator: Navigator) {
         scene(route = "/addExpenses/{id}?") { backStackEntry ->
             val idFromPath: Long? = backStackEntry.path<Long>("id")
             val expense = idFromPath?.let { viewModel.getExpenseById(it) }
-            val actionState by viewModel.setActionState.collectAsStateWithLifecycle()
             ExpenseDetailScreen(
                 expense,
                 categoryList = viewModel.getCategories()
@@ -50,17 +49,7 @@ fun Navigation(navigator: Navigator) {
                 } else {
                     viewModel.editExpense(expenseItem)
                 }
-                when (val result = actionState) {
-                    is Resource.Failure -> {
-                        println("${result.exception.message}")
-                        navigator.popBackStack()
-                    }
-
-                    Resource.Loading -> println("loading")
-                    is Resource.Success -> {
-                        navigator.popBackStack()
-                    }
-                }
+                navigator.popBackStack()
             }
         }
     }

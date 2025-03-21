@@ -34,9 +34,6 @@ class ExpensesViewModel(
         Success(ExpensesUiState(it, it.sumOf { expense -> expense.amount }))
     }.catch { Failure(it) }.stateIn(viewModelScope, SharingStarted.Lazily, Loading)
 
-    private val _setActionState = MutableStateFlow<Resource<Boolean>>(Loading)
-    val setActionState: StateFlow<Resource<Boolean>> = _setActionState
-
     fun getCategories(): List<ExpenseCategory> {
         return expensesRepository.getCategories()
     }
@@ -54,7 +51,6 @@ class ExpensesViewModel(
     fun editExpense(expense: Expense) {
         viewModelScope.launch {
             expensesRepository.editExpense(expense)
-                .collect { state -> _setActionState.value = state }
         }
     }
 
